@@ -1,0 +1,2608 @@
+/* Grundlegender Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body-Hintergrund */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #2C3E50; /* Dunkler Hintergrund */
+  color: #333;               /* Standard-Textfarbe */
+}
+
+/* Container für die Login-Seite */
+/* Login-Container mit blau-grauem Hintergrund (wie beim Signup) */
+.login-container {
+  background-color: #BDC3C7; /* Blau-grau, wie beim Signup */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+
+/* Weißes Login-Kästchen */
+.login-card {
+  background-color: #fff;
+  width: 320px;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Avatar/Logo oben */
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #eee;
+
+  /* Stroke (Rahmen) um das Logo */
+  border: 2px solid #000; /* 2px Schwarz */
+}
+
+
+/* Überschrift „Login“ */
+.login-card h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Formular */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login-form input {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* „Login“-Button */
+.login-form button {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #3498DB; /* Blau */
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  background-color: #2980B9;
+}
+
+/* Hinweis zum Signup */
+.signup-hint {
+  margin-top: 1rem;
+  color: #333; /* Falls du es in Weiß möchtest, nimm #fff */
+}
+
+.signup-hint a {
+  color: #3498DB;
+  text-decoration: none;
+}
+
+/* Grundlegender Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Hintergrund und Container */
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #2C3E50; /* Dunkler Hintergrund */
+}
+
+/* Weißer Sign-Up-Kasten */
+.signup-card {
+  background-color: #fff;
+  width: 320px;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Avatar/Logo oben */
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #eee;
+  margin-bottom: 1rem;
+  object-fit: cover;
+  /* Stroke (Rahmen) um das Logo */
+  border: 2px solid #000; /* Anpassen nach Geschmack */
+}
+
+/* Überschrift */
+.signup-card h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Formular */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+}
+
+.signup-form input {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Sign-Up Button */
+.signup-form button {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #3498DB; /* Blau */
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.signup-form button:hover {
+  background-color: #2980B9;
+}
+
+/* Hinweis für bestehendes Konto */
+.login-hint {
+  margin-top: 1rem;
+  color: #333; /* oder #fff, falls du es heller möchtest */
+}
+
+.login-hint a {
+  color: #3498DB;
+  text-decoration: none;
+}
+/* --- Tailwind Imports (falls benötigt) ---
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+*/
+
+/* --- Reset & Global Styles --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Globaler Hintergrund und Schrift */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #3E4A54; /* Dunkler Hintergrund */
+  color: #fff;              /* Helle Schrift für Kontrast */
+}
+
+/* Globale Button-Schriftstärke */
+button {
+  font-weight: 600; /* Semibold für alle Buttons */
+}
+
+/* ----------------------------------------
+   LOGIN
+---------------------------------------- */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #2C3E50; /* Dunkler Hintergrund */
+}
+
+.login-card {
+  background-color: #fff;
+  color: #333;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 320px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login-form input {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #333;
+}
+
+.login-form button {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #3498DB;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.login-form button:hover {
+  background-color: #2980B9;
+}
+
+.signup-hint {
+  margin-top: 1rem;
+}
+
+.signup-hint a {
+  color: #3498DB;
+  text-decoration: none;
+}
+
+/* ----------------------------------------
+   SIGNUP
+---------------------------------------- */
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.signup-card {
+  background-color: #fff;
+  color: #333;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 320px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+}
+
+.signup-form input {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #333;
+  text-align: center;
+}
+
+.signup-form button {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #3498DB;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.signup-form button:hover {
+  background-color: #2980B9;
+}
+
+.login-hint {
+  margin-top: 1rem;
+}
+
+.login-hint a {
+  color: #3498DB;
+  text-decoration: none;
+}
+
+/* ----------------------------------------
+   AVATAR (gemeinsame Regel)
+---------------------------------------- */
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  object-fit: cover;
+  background-color: #eee;
+  border: 3px solid #000; /* Stroke */
+}
+
+/* ----------------------------------------
+   CREATE PLAYER
+---------------------------------------- */
+.create-player-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+  min-height: 100vh;
+}
+
+.create-player-card {
+  background-color: #fff;
+  color: #333;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 320px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.create-player-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.create-player-form input,
+.create-player-form select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
+  background-color: #fff;
+  color: #333;
+}
+
+.create-player-form input::placeholder {
+  color: #999;
+}
+
+.create-player-form select option[value=""] {
+  color: #999;
+}
+
+
+.button-group button {
+  flex: 1;
+  margin: 0 0.5rem;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.button-group button:nth-child(1) {
+  background-color: #95a5a6;
+  color: #fff;
+}
+.button-group button:nth-child(1):hover {
+  background-color: #7f8c8d;
+}
+
+.button-group button:nth-child(2) {
+  background-color: #3498DB;
+  color: #fff;
+}
+.button-group button:nth-child(2):hover {
+  background-color: #2980B9;
+}
+
+/* ----------------------------------------
+   ROSTER
+---------------------------------------- */
+.roster-container {
+  background-color: white;
+}
+
+.roster-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  /* Lässt coach-info links, team-name rechts, logo in der Mitte */
+  margin-bottom: 1rem;
+}
+
+.coach-info {
+  flex: 1;
+  text-align: left;
+  font-size: 0.95rem;
+  color: #2c3e50;
+}
+
+.logo-container {
+  flex: 1;
+  text-align: center;
+}
+
+.team-name {
+  flex: 1;
+  text-align: right;
+  font-size: 0.95rem;
+  color: #2c3e50;
+}
+
+.team-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #eee;
+  border: 2px solid #000;
+}
+
+
+.roster-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #1e293b;
+  margin: 5;
+}
+
+.roster-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 1rem;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+  table-layout: fixed;
+}
+
+.roster-table thead {
+  background-color: #ddd;
+}
+
+.roster-table th,
+.roster-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  text-align: center;
+  white-space: nowrap;         /* Verhindert Zeilenumbrüche */
+}
+
+
+/* Edit/Delete Buttons */
+.edit-btn,
+.delete-btn {
+  width: 70px;
+  padding: 0.5rem 0.75rem;
+  margin: 0 4px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.edit-btn {
+  background-color: #3498DB;
+  color: #fff;
+}
+.edit-btn:hover {
+  background-color: #2980B9;
+}
+
+.delete-btn {
+  background-color: #E74C3C;
+  color: #fff;
+}
+.delete-btn:hover {
+  background-color: #C0392B;
+}
+
+/* ----------------------------------------
+   GAME OVERVIEW
+---------------------------------------- */
+.game-overview-container {
+  min-height: 100vh;
+  background-color: #f1f5f9; /* wie bei signup-overview */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1.5rem;
+}
+
+.game-header {
+  background-color: #cbd5e1;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 80rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 0 auto;
+  border: 3px solid #000;
+  object-fit: cover;
+  background-color: #eee;
+}
+
+.game-title {
+  margin-top: 1rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1e293b;
+}
+
+.game-table {
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 80rem;
+  overflow-x: auto;
+  border-collapse: collapse;
+  background-color: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.game-table thead {
+  background-color: #e2e8f0;
+}
+
+.game-table th,
+.game-table td {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  text-align: center;
+  color: #0f172a;
+}
+
+.game-table tbody tr {
+  border-top: 1px solid #cbd5e1;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.game-table tbody tr:hover {
+  background-color: #f0f9ff;
+}
+
+
+.game-table button {
+  margin: 0 4px;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* Buttons (Watch / Box Score / Analytics) */
+.watch-btn {
+  background-color: #3B82F6; /* blue-500 */
+  color: #fff;
+}
+.watch-btn:hover {
+  background-color: #2563EB; /* blue-600 */
+  transform: translateY(-1px);
+}
+
+.boxscore-btn {
+  background-color: #E5E7EB;
+  color: #fff;
+}
+.boxscore-btn:hover {
+  background-color: #D1D5DB;
+  transform: translateY(-1px);
+}
+
+/* --- Grundlegender Reset --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* --- Globaler Body-Hintergrund (dunkel) --- */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #2C3E50; /* Dunkler Hintergrund */
+  color: #333;
+  min-height: 100vh;
+}
+
+
+.analytics-btn {
+  background-color: #F97316; /* orange-500 */
+  color: #fff;
+}
+.analytics-btn:hover {
+  background-color: #EA580C; /* orange-600 */
+  transform: translateY(-1px);
+}
+
+
+
+/* ----------------------------------------
+   VIDEO PAGE
+---------------------------------------- */
+.video-page-container {
+  /* Reduziere die Breite und zentriere den Container */
+  width: fit-content;       /* Passt sich dem Inhalt an */
+  max-width: 1200px;       /* Verhindert, dass es zu breit wird */
+  margin: 6rem auto 2rem;  /* Zentriert horizontal, Abstand oben/unten */
+
+  background-color: #F8F8F8;
+  color: #333;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
+}
+
+/* Avatar/Logo im Video-Header */
+.video-page-header {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.video-page-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #F8F8F8;
+  object-fit: cover;
+  background-color: #eee;
+}
+
+/* Bereich für das "Video" */
+.video-frame {
+  margin-top: 3rem;      /* Platz unter dem Avatar */
+  height: 300px;         /* Beispielhöhe */
+  background-color: #ddd;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-frame p {
+  font-size: 1.5rem;
+  color: #555;
+}
+
+/* Button-Leiste */
+.video-button-group {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.video-button-group button {
+  padding: 0.85rem 1.75rem;
+  border: none;
+  border-radius: 1rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  min-width: 160px;
+}
+
+/* Verschiedene Farben für die Buttons */
+.score-sheet-btn {
+  background-color: #1ABC9C; /* Türkis */
+}
+.score-sheet-btn:hover {
+  background-color: #16A085;
+}
+
+.boxscore-btn {
+  background-color: #F1C40F; /* Gelb */
+  color: #fff
+}
+.boxscore-btn:hover {
+  background-color: #D4AC0D;
+}
+
+.analytics-btn {
+  background-color: #E67E22; /* Orange */
+}
+.analytics-btn:hover {
+  background-color: #CA6F1E;
+}
+
+.back-btn-rounded {
+  background-color: #3498db;
+}
+
+.back-btn-rounded:hover {
+  background-color: #2980B9;        /* Dunkleres Blau beim Hover */
+}
+
+
+
+
+
+/* ----------------------------------------
+   NEW TEAM PAGE
+---------------------------------------- */
+.new-team-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+  background-color: #F8F8F8;
+  color: #333;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* Logo zentrieren */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.team-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #eee;
+}
+
+/* Dropzone */
+.dropzone p button {
+  background-color: #eee;         /* Hellgrau */
+  border: 2px dashed #3498DB;     /* 2px gestrichelter Rahmen in Blau */
+  border-radius: 8px;             /* Abgerundete Ecken */
+  padding: 0.5rem 1rem;          /* Weniger Padding → kleinerer Button */
+  font-size: 0.9rem;             /* Etwas kleinere Schrift */
+  cursor: pointer;
+  outline: none;
+
+  /* Text-Stroke-Effekt (optional) */
+  color: transparent;
+  -webkit-text-stroke: 1px #3498DB;
+  -webkit-text-fill-color: #fff;
+}
+
+.dropzone p button:hover {
+  background-color: #ddd;         /* Dunkleres Grau beim Hover */
+}
+
+
+
+.dropzone {
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem auto 2rem;
+  cursor: pointer;
+  max-width: 400px;
+}
+
+.dropzone p {
+  margin: 0;
+}
+
+.browse-button {
+  background-color: #3498DB;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+.browse-button:hover {
+  background-color: #2980B9;
+}
+
+/* Team Name */
+.team-name-container {
+  margin-bottom: 2rem;
+}
+
+.team-name-container label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.team-name-container input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
+}
+
+/* Team Colour */
+.team-color-container {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Farbfeld (Swatch) */
+.color-swatch {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  border: 2px solid #ccc;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+/* Picker-Popover */
+.picker-popover {
+  position: relative;
+  display: inline-block;
+  margin-top: 1rem;
+}
+/* Container um den SketchPicker zentrieren */
+.picker-wrapper {
+  display: flex;             /* Ermöglicht flexbox-Ausrichtung */
+  justify-content: center;   /* Zentriert horizontal */
+  margin-top: 1rem;          /* Kleiner Abstand nach oben (optional) */
+}
+
+/* Optional, falls du die SketchPicker-Komponente direkt ansprechen willst:
+.picker-wrapper .sketch-picker {
+  margin: 0 auto;
+}
+*/
+
+
+.picker-cover {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+/* Buttons (Exit/Submit) */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.button-group button {
+  width: 120px;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.button-group button:nth-child(1) {
+  background-color: #95a5a6;
+  color: #fff;
+}
+.button-group button:nth-child(1):hover {
+  background-color: #7f8c8d;
+}
+
+.button-group button:nth-child(2) {
+  background-color: #3498DB;
+  color: #fff;
+}
+.button-group button:nth-child(2):hover {
+  background-color: #2980B9;
+}
+
+/* ----------------------------------------
+   BOX SCORE (volle Breite)
+---------------------------------------- */
+/* --- Grundlegender Reset --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* --- Globaler Body-Hintergrund (dunkel) --- */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #2C3E50; /* Dunkler Hintergrund */
+  color: #333;
+  min-height: 100vh;
+}
+
+/* ----------------------------------------
+   BOX SCORE PAGE
+---------------------------------------- */
+
+/* Weißer Container für Boxscore-Seite,
+   leicht abgesetzt vom dunklen Body-Hintergrund */
+.boxscore-page {
+  max-width: 1200px;
+  margin: 2rem auto;
+  background-color: #fff;
+  border-radius: 8px;
+  text-align: center;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Header-Bereich (dunkler Balken) */
+.boxscore-header {
+  background-color: #3E4A54; /* Dunklerer Header-Hintergrund */
+  color: #fff;               /* Helle Schrift */
+  padding: 1rem 0;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+/* Logo/Avatar im Header */
+.boxscore-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #eee;
+  border: 2px solid #000; /* Stroke */
+  margin-bottom: 0.5rem;
+}
+
+/* Box Score Titel */
+.boxscore-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Teams untereinander (Stacked Layout) */
+.boxscore-teams {
+  display: flex;
+  flex-direction: column; /* Stapelt die .team-boxscore-Blöcke */
+  align-items: center;    /* Zentriert sie horizontal */
+  gap: 2rem;             /* Abstand zwischen den Teams */
+}
+
+/* Einzelner Team-Boxscore */
+.team-boxscore {
+  width: 100%;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Team-Name */
+.team-boxscore h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Abschnitt Starters/Reserves */
+.boxscore-section {
+  margin-top: 1rem;
+}
+
+.boxscore-section h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Tabelle */
+.boxscore-table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  color: #000;
+  background-color: #fff;
+}
+
+
+
+.boxscore-table thead {
+  background-color: #ddd;
+}
+
+.boxscore-table th,
+.boxscore-table td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* Footer mit Back-Button */
+.boxscore-footer {
+  margin-top: 2rem;
+  text-align: center; /* Zentriert den Button */
+}
+
+.boxscore-footer button {
+  padding: 0.75rem 1.5rem;
+  background-color: #3498DB;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.boxscore-footer button:hover {
+  background-color: #2980B9;
+}
+
+
+/* Container für die Roster-Tabelle */
+.roster-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  background-color: #F8F8F8;
+  color: #333;
+  padding: 1rem 2rem 2rem;
+  border-radius: 8px;
+}
+
+/* Header */
+.roster-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e2e8f0; /* heller Hintergrund */
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.logo-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.coach-info,
+.team-name {
+  flex: 1;
+  font-size: 0.95rem;
+  color: #2c3e50;
+}
+
+.logo-container {
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.team-name {
+  flex: 1;
+  text-align: right;
+}
+
+/* Team-Logo */
+.team-logo {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #000;
+  margin-bottom: 0.5rem;
+}
+
+/* Roster Tabelle */
+.roster-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  overflow-x: auto;
+  display: block;
+}
+
+.roster-table thead {
+  background-color: #ddd;
+}
+
+.roster-table th,
+.roster-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+/* Icons */
+/* Stelle sicher, dass alle Zellen (th, td) dieselbe Grundformatierung haben */
+.roster-table th,
+.roster-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  text-align: center;
+  vertical-align: middle;  /* Icons werden mittig in der Zeile ausgerichtet */
+  font-size: 0.9rem;
+}
+
+
+
+/* Container für die Icons */
+.action-buttons {
+  display: flex;
+  align-items: left;   /* Icons vertikal mittig ausrichten */
+  justify-content: left;
+  gap: 12px;              /* Abstand zwischen Icons */
+  height: 100%;           /* Wichtig für vertikale Ausrichtung */
+}
+
+
+/* Edit-Icon (schwarz oder grau) */
+
+.edit-icon,
+.delete-icon,
+.stats-btn {
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Delete-Icon (rot) */
+.delete-icon {
+  color: #E74C3C;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.edit-icon:hover,
+.delete-icon:hover {
+  transform: scale(1.1);
+}
+
+
+.score-sheet-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  background-color: #F8F8F8;
+  color: #333;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+}
+
+/* Header */
+.score-sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.score-sheet-header-item {
+  font-size: 0.9rem;
+}
+
+/* Titel */
+.score-sheet-title {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+}
+
+/* Teams-Bereich (Home / Away) */
+.teams-section {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  gap: 2rem;
+}
+
+.team-block {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+
+/* Überschrift Home/Away Team */
+.team-block h2 {
+  margin-top: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937; /* text-gray-800 */
+  text-transform: none; /* <- stellt sicher, dass keine Uppercase-Erzwingung da ist */
+}
+
+
+/* TimeOuts / Teamfouls */
+.time-fouls-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.box-row {
+  display: flex;
+  gap: 4px;
+}
+
+.box {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #333;
+  background-color: #fff;
+}
+
+/* Tabelle der Spieler */
+.player-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+.player-table th,
+.player-table td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: left;
+  font-size: 0.85rem;
+}
+
+/* Score-Tabelle */
+.score-section {
+  margin-bottom: 1rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.score-section h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.5rem;
+}
+
+.score-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+.score-table th,
+.score-table td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+/* Footer */
+.score-sheet-footer {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  padding-left: 2rem;
+}
+
+.start-link {
+    padding-left: 0.2rem;
+}
+
+.analytics-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  background-color: #f8f8f8;
+  color: #333;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.analytics-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #BDC3C7; /* Beispiel: hellgrau */
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  padding: 1rem 0;
+}
+
+.analytics-logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #eee;
+  border: 3px solid #000;
+  margin-bottom: 0.5rem;
+}
+
+.analytics-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #2C3E50;
+}
+
+.charts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;        /* Vergrößert den horizontalen und vertikalen Abstand */
+  justify-content: center;
+  margin-bottom: 3rem;  /* zusätzlicher Abstand nach unten */
+}
+
+
+.chart-card {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+
+  /* NEU: mehr Außenabstand */
+  margin-bottom: 2rem;
+}
+
+/* Spalten mit Klasse "m-col" bekommen #D9D9D9 Hintergrund */
+.m-col {
+  background-color: #D9D9D9;
+}
+
+/* -----------------------------------
+   HOME PAGE STYLES
+----------------------------------- */
+
+/* ---------------------------
+   BODY-GRUNDFARBE
+----------------------------*/
+body {
+  background-color: #3E4A54; /* Dunkler Body-Hintergrund */
+  color: #fff;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+
+/* ---------------------------
+   HOMEPAGE-GRUNDSTRUKTUR
+----------------------------*/
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #2C3E50; /* Dark background for the rest of the page */
+  min-height: 100vh;
+}
+
+
+/* ---------------------------
+   HEADER-BEREICH
+----------------------------*/
+/* Header bekommt z. B. eine andere Hintergrundfarbe
+   (ähnlich dem Analytics-Header). */
+.home-header {
+  width: 100%;
+  max-width: 900px;
+  background-color: #BDC3C7; /* z. B. hellgrau */
+  color: #2C3E50;            /* dunklere Schrift */
+  text-align: center;
+  padding: 2rem;
+  border-radius: 8px;
+  margin: 2rem auto;         /* Abstand nach oben/unten */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Logo/Avatar */
+.home-header img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: #eee;
+  border: 2px solid #000;
+  margin-bottom: 1rem;
+}
+
+/* Titel */
+.home-header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+/* Beschreibung */
+.home-header p {
+  color: #444;
+  margin-bottom: 1.5rem;
+}
+
+
+.login-btn, .signup-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+/* Verschiedene Farben für die Buttons */
+.login-btn {
+  background-color: #3498DB; /* Blau */
+  color: #fff;
+}
+.login-btn:hover {
+  background-color: #2980B9;
+}
+
+.signup-btn {
+  background-color: #E67E22; /* Orange */
+  color: #fff;
+}
+.signup-btn:hover {
+  background-color: #D35400;
+}
+
+/* ---------------------------
+   FEATURES-BEREICH
+----------------------------*/
+/* Optional eigener Hintergrund oder Weiß. */
+.features-section {
+  width: 100%;
+  max-width: 900px;
+  background-color: #fff; /* Weißer Block */
+  color: #333;            /* Dunkler Text */
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  margin: 2rem auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* Titel + Beschreibung */
+.features-section .featuresTitle {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #2C3E50; /* z. B. dunkler Ton */
+}
+
+.features-section .featuresText {
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+/* Grid mit Feature-Karten */
+.features-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.feature-card {
+  flex: 1 1 200px;
+  max-width: 250px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.feature-card img {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  display: block;
+  background-color: #ddd;
+  border-radius: 50%;
+  border: 2px solid #000; /* analog zum Header-Logo */
+}
+
+.feature-card h3 {
+  margin: 0.75rem 0 0.5rem;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.feature-card p {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* ---------------------------
+   FOOTER-BEREICH
+----------------------------*/
+/* Optional eigener Hintergrund */
+.home-footer {
+  width: 100%;
+  max-width: 900px;
+  background-color: #BDC3C7; /* Gleiche Farbe wie Header, z. B. */
+  color: #2C3E50;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  margin: 2rem auto;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.home-footer p {
+  margin: 0.5rem 0;
+  color: #444;
+}
+
+.home-container {
+  background-color: #FFFFFF; /* same or similar color as your Game Overview */
+  border-radius: 8px;
+  max-width: 1200px;
+  margin: 2rem auto; /* centers horizontally, adds top/bottom space */
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Optional: override the text color if needed */
+.home-container h1,
+.home-container p,
+.home-container h2 {
+  color: #2C3E50; /* or some dark color to contrast with #BDC3C7 */
+}
+
+.actor-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap; /* Falls der Platz nicht ausreicht */
+}
+.actor-text {
+  flex: 1;
+  text-align: center; /* Zentriert den Text horizontal */
+}
+.actor-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem auto;
+}
+
+.actor-image img {
+  width: 250px; /* Setze die Größe des Bildes */
+  height: 250px; /* Gleiche Höhe wie Breite für Kreisform */
+  object-fit: cover; /* Stellt sicher, dass das Bild die Kreisform füllt */
+  border-radius: 50%; /* Macht das Bild rund */
+  border: 5px solid black; /* Schwarzer Rahmen */
+  padding: 5px;
+  background-color: white; /* Falls das Bild einen transparenten Hintergrund hat */
+}
+
+
+.detailed-explanation {
+  padding: 2rem;
+}
+
+.back-btn {
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #3498db;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  gap: 0.5rem;
+  width: 9rem;
+  height: 2.2rem;
+}
+
+.back-btn:hover {
+  background-color: #2980B9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.boxscore-footer {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.boxscore-footer button {
+  padding: 0.75rem 1.5rem;
+  background-color: #3498DB;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.boxscore-footer button:hover {
+  background-color: #2980B9;
+}
+
+
+/* Haupt-Container */
+.min-h-screen {
+  min-height: 100vh;
+  background-color: #f1f5f9; /* bg-slate-100 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1.5rem;
+}
+
+/* Header */
+.flex.flex-col.items-center.mb-10 {
+  background-color: #cbd5e1; /* leichtes Grau */
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 80rem;
+  text-align: center;
+}
+
+.flex.flex-col.items-center.mb-10 img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.flex.flex-col.items-center.mb-10 h1 {
+  margin-top: 1rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1e293b; /* text-slate-800 */
+}
+
+.flex.flex-col.items-center.mb-10 p {
+  margin-top: 0.5rem;
+  color: #64748b; /* text-gray-600 */
+  font-size: 0.95rem;
+}
+
+/* Tabellen-Stil */
+.overflow-x-auto {
+  margin-top: 1.5rem;
+  width: 100%;
+  width: 80rem;
+  padding-left: 2.5rem;  /* px-10 */
+  padding-right: 2.5rem;
+}
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 0.5rem;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+
+thead {
+  background-color: #e2e8f0; /* blaugrau */
+}
+
+th,
+td {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  text-align: left;
+  color: #0f172a; /* dunkelblau */
+}
+
+thead th {
+  font-weight: 600;
+  color: #1e293b; /* Titel: dunkles marineblau */
+}
+
+tbody tr {
+  border-top: 1px solid #cbd5e1;
+  transition: background-color 0.2s ease-in-out;
+}
+
+tbody tr:hover {
+  background-color: #f0f9ff; /* leichtes Blau beim Hover */
+}
+
+.error-message {
+  color: #ef4444;
+  font-weight: 500;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* Header */
+.analytics-header {
+  background-color: #cbd5e1; /* kühles Grau-Blau */
+  width: 100%;
+  max-width: 80rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.analytics-logo {
+  border-radius: 9999px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.analytics-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b; /* dunkles Blau */
+  margin-top: 1rem;
+}
+
+.analytics-subtitle {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: #64748b; /* kühles Grau */
+}
+
+
+.stats-icon {
+  color: #2ecc71;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.stats-icon:hover {
+  transform: scale(1.1);
+  color: #27ae60;
+}
+
+.stats-btn {
+  background: none;
+  border: none;
+  color: #2ecc71;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.stats-btn:hover {
+  color: #27ae60;
+  transform: scale(1.1);
+}
+
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  z-index: 10;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.autocomplete-list li {
+  padding: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.autocomplete-list li:hover {
+  background-color: #eee;
+}
+
+.autocomplete-list li:last-child {
+  border-bottom: none; /* Kein Strich beim letzten Element */
+}
+
+.charts-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.chart-box {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 550px;
+  height: 350px; /* Feste Höhe */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+
+.header-tabellen-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  width: 100%;
+  max-width: 77rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-left: 3.5rem;
+}
+
+/* Neuer Button-Style */
+.add-player-button {
+  background-color: #3b82f6;
+  color: white;
+  font-weight: 600;
+  font-size: 0.86rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 9rem;
+  height: 2.2rem;
+}
+
+
+.add-player-button:hover {
+  background-color: #2563eb; /* blue-600 */
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+  padding-left: 0rem;
+  text-align: center
+}
+
+.form-input {
+  padding: 0.5rem;
+  padding-left: 0.5rem;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.readonly-input {
+  background-color: #f0f0f0;
+}
+
+.home-page-button {
+  background-color: #64748b;
+  color: white;
+  font-weight: 600;
+  font-size: 0.86rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 9rem;
+  height: 2.2rem;
+}
+
+.home-page-button:hover {
+  background-color: #4b5563;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.team-stats-button {
+  background-color: #3498DB;
+  color: white;
+  font-weight: 600;
+  font-size: 0.86rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 9rem;
+  height: 2.2rem;
+}
+
+
+.team-stats-button:hover {
+  background-color: #2980B9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stats-table {
+  max-width: 500px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  font-family: Arial, sans-serif;
+}
+
+.stats-header {
+  display: flex;
+  background-color: #e2e8f0;
+  font-weight: bold;
+  padding: 0.75rem 1rem;
+  color: #1e293b;
+  border-bottom: 1px solid #cbd5e1;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+.label-col {
+  flex: 1;
+  text-align: left;
+}
+
+.value-col {
+  flex: 1;
+  text-align: right;
+}
+
+.chart-wrapper {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #d1d5db;
+  height: 400px;
+  max-width: 700px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+
+.diagramm-wechsel {
+  margin-top: 2.5rem; /* entspricht mt-10 */
+  display: flex;
+  justify-content: center;
+}
+
+.diagramm-button {
+  padding: 0.5rem 1.5rem;
+  background: linear-gradient(to right, #3b82f6, #6366f1); /* von blau zu indigo */
+  color: white;
+  font-weight: 600;
+  border-radius: 9999px; /* voll gerundet */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.diagramm-button:hover {
+  background: linear-gradient(to right, #2563eb, #4f46e5);
+}
+
+.edit-gym-button {
+  background-color: #3B82F6;
+  color: white;
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.86rem;
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  width: 9rem;
+  height: 2.2rem;
+}
+
+.edit-gym-button:hover {
+  background-color: #2563EB;
+  transform: translateY(-1px);
+}
+
+.game-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 80rem;
+  background-color: #cbd5e1;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1.5rem;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.add-game-button {
+  background-color: #3b82f6;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 2.5rem;
+}
+
+.add-game-button:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.selected-info {
+  color: #2ecc71;
+  text-align: center;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 1rem 1rem; /* ⬅️ Mehr Padding */
+  background-color: #ecfdf5;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.roster-btn {
+  background-color: #2ecc71;
+  color: white;
+  padding: 6px 12px;
+  margin-top: 0.3rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.roster-btn:hover {
+  background-color: #27ae60;
+}
+
+.roster-page {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.starter-section,
+.bench-section {
+  margin-bottom: 2rem;
+}
+
+.starter-dropdown {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.7rem;
+  gap: 1rem;
+}
+
+.bench-add {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.bench-list {
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  list-style: square;
+}
+
+
+.save-btn {
+  background-color: #2ecc71;
+  color: white;
+  padding: 10px 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background-color: #27ae60;
+}
+
+
+/* ==== Roster Page Styling === */
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  background-color: #38434f;
+}
+
+.form-card {
+  background-color: white;
+  padding: 2rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  max-width: 500px;
+  width: 100%;
+}
+
+.avatar-container {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.avatar-container img {
+  height: 80px;
+  width: 80px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.avatar-container h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.form-content h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  color: #2c3e50;
+  display: block;
+}
+
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.form-group select,
+.form-group input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: #2ecc71;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+
+
+.btn-primary:hover {
+  background-color: #27ae60;
+}
+
+.btn-secondary {
+  background-color: #3498db;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #2980b9;
+}
+
+.bench-list {
+  padding-left: 1rem;
+  margin-top: 1rem;
+}
+
+.bench-list li {
+  margin: 0.3rem 0;
+  color: #333;
+  font-weight: 500;
+}
+
+
+.section-title {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.position-subheading {
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
+h3 {
+  display: block;
+  font-size: 1.25rem;
+  margin: 1rem 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 1rem 0;
+  color: #222;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 0.5rem;
+}
+
+/* In deiner globals.css */
+.home-button {
+  background-color: #007bff;
+  color: white;
+  padding: 0.7rem 1.5rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  gap: 0.5rem;
+  width: 9rem;
+  height: 2.2rem;
+}
+
+.home-button:hover {
+  background-color: #4b5563;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Header-Styling für die Teams-Seite */
+
+.teams-header {
+  width: 100%;
+  max-width: 72rem; /* entspricht max-w-6xl */
+  background-color: #e2e8f0; /* bg-slate-200 */
+  border-radius: 1rem; /* rounded-2xl */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+  padding: 2rem 2.5rem; /* px-10 py-8 */
+  margin-bottom: 2.5rem; /* mb-10 */
+  text-align: center;
+}
+
+.teams-header-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.teams-header-logo {
+  border-radius: 9999px; /* rounded-full */
+  border: 2px solid black;
+  margin-bottom: 1rem; /* mb-4 */
+}
+
+.teams-header-title {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 700;
+  color: #1e293b; /* text-slate-800 */
+}
+
+@media (min-width: 768px) {
+  .teams-header-title {
+    font-size: 2.25rem; /* text-4xl auf md+ */
+  }
+}
+
+.teams-header-subtitle {
+  font-size: 0.875rem; /* text-sm */
+  color: #64748b; /* text-gray-600 */
+  margin-top: 0.25rem; /* mt-1 */
+}
+
+.teams-content-wrapper {
+  width: 100%;
+  max-width: none;
+  overflow-x: auto;
+}
+
+.team-logo-small {
+  width: 30px;
+  height: 30px;
+  border-radius: 9999px;
+  border: 1px solid black;
+  object-fit: cover;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 72rem; /* entspricht max-w-6xl */
+}
+
+.back-button {
+  background-color: #1E90FF;
+  color: white;
+  font-weight: 600;
+  font-size: 0.86rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 9rem;
+  height: 2.2rem;
+}
+
+.back-button:hover {
+  background-color: #1C86EE;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.home-button {
+  background-color: #475569; /* bg-slate-600 */
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: background-color 0.2s ease;
+}
+
+.home-button:hover {
+  background-color: #334155; /* hover:bg-slate-700 */
+}
+
+
+
+/* Home */
+.teams-home-button {
+  background-color: #64748b;
+  color: white;
+}
+.teams-home-button:hover {
+  background-color: #4b5563;
+}
+
+.teams-button-row,
+.button-group,
+.teams-home-button {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 77rem;
+  padding-left: 1rem;
+}
+
+.team-logo-player {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+  background-color: white;
+}
+
+.team-name-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* zentriert in der Zelle */
+  gap: 10px; /* Abstand zwischen Logo & Name */
+}
+
+.team-matchup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;              /* entspricht gap-20 */
+  margin-bottom: 2rem;    /* entspricht mb-8 */
+  flex-wrap: wrap;
+}
+
+.team-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #1f2937; /* text-gray-800 */
+}
+
+
+.team-logo-large {
+  width: 8rem;
+  height: 8rem;
+  object-fit: contain;
+  border: 2px solid black;
+  border-radius: 9999px;
+  background-color: transparent; /* Stelle sicher, dass kein weißer BG drin ist */
+}
+
+
+
+.vs-text {
+  font-size: 1.875rem;    /* text-3xl */
+  font-weight: 700;
+  color: #6b7280;         /* text-gray-500 */
+}
+
+.game-info-text {
+  color: #374151;         /* text-gray-700 */
+  font-size: 1.125rem;    /* text-lg */
+  margin-bottom: 1.5rem;  /* mb-6 */
+}
+
+.game-info-text p {
+  margin-bottom: 0.25rem; /* space-y-1 */
+}
+
+.countdown-box {
+  font-size: 1.5rem;      /* text-2xl */
+  font-weight: 700;
+  color: #000;         /* text-red-600 */
+  margin-bottom: 2.5rem;  /* mb-10 */
+}
+
+
+
+
+.boxscore-table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+  padding-bottom: 1rem;
+}
+
+.proposal-btn {
+  background: #22c55e;   /* grün */
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,.15);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.proposal-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,.12);
+}

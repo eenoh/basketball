@@ -1,0 +1,87 @@
+from PIL import Image
+from roboflow import CLIPModel
+from transformers import CLIPModel, CLIPProcessor
+from ..utils import read_stub, save_stub
+
+import cv2
+
+class TeamAssigner:
+    def __init__(self,
+                 team_1_class_name="white shirt",
+                 team_2_class_name="dark blue shirt",
+                 ):
+        self.team_1_class_name= team_1_class_name
+        self.team_2_class_name= team_2_class_name
+
+        self.player_team = {}
+
+    def load_model(self):
+        self.model = CLIPModel.from_pretrained("patrickjohncyh/fashion-clip")
+        self.processor = CLIPProcessor.from_pretrained("patrickjohncyh/fashion-clip ")
+
+    def get_player_color(self, frame, bbox):
+        # bbox --> x1, y1, x2, y2
+        image = frame[int(bbox[1]):int(bbox[3]), int(bbox[0]):int(bbox[2])]
+
+        rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        pil = Image.fromarray(rgb)
+
+        classes = [self.team_1_class_name, self.team_2_class_name]
+
+        inputs = self.processor(text=classes, images=pil, return_tensors="pt", padding=True)
+
+        outputs = self.model(**inputs)
+        logits_per_image = outputs.logits_per_image
+        probs = logits_per_image.softmax(dim=1)
+
+        class_name = classes[probs.argmax(dim=1)[0]]
+        return class_name
+
+    def get_player_team(self, frame, bbox, player_id):
+
+        if player_id in self.player_team:
+            return self.player_team[player_id]
+
+
+        color = self.get_player_color(frame, bbox)
+
+        team_id = 2
+        if color == self.team_1_class_name:
+            team_id = 1
+
+        self.player_team[player_id] = team_id
+        return team_id
+
+    def track_player_teams(self, frames, tracks, read_stubb=False, stub_path=None):
+
+        player_assignment = read_stub(read_stubb, stub_path)
+
+        if player_assignment is not None:
+            if len(player_assignment) == len(frames):
+                return player_assignment
+
+        self.load_model()
+
+        player_assignment = []
+
+        for num, player_track in enumerate(tracks):
+            player_assignment.append({})
+
+            if num %50 == 0:
+                self.player_team = {}
+
+            for player_id,track in player_track.items():
+                team = self.get_player_team(frames[num], track["bbox"], player_id)
+                player_assignment[num][player_id] = team
+
+
+        save_stub(stub_path, player_assignment)
+
+        return player_assignment
+
+    def assign_live_teams(self, player_tracks):
+        assignment = {}
+        for track_id in player_tracks:
+            assignment[track_id] = 1 if track_id % 2 == 0 else 2  # Dummy-Logik
+        return assignment
+    

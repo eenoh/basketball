@@ -1,0 +1,127 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Testing
+coverage/
+
+# Next.js build output
+.next/
+out/
+
+# Production builds
+build/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.pt
+*.h5
+
+# Environment files
+.env
+.env.*
+.venv/
+.venv1/
+*.pem
+
+# VS Code and IDE settings
+.vscode/
+.idea/
+
+# Package manager logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Misc system files
+.DS_Store
+Thumbs.db
+
+# Docker artifacts
+*.pid
+*.seed
+docker-compose.override.yml
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Archives & cache
+*.zip
+*.tar
+*.gz
+*.rar
+*.7z
+
+# Logfiles
+*.log
+
+# Local databases
+*.sqlite
+*.db
+
+
+# =========================
+# ML / AI datasets (DO NOT COMMIT)
+# =========================
+
+# Training datasets & annotations
+domain/trainings/
+domain/notebooks/
+
+# Common dataset folders
+datasets/
+data/
+raw_data/
+processed_data/
+annotations/
+labels/
+images/
+videos/
+
+# Model outputs / checkpoints
+models/
+weights/
+checkpoints/
+runs/
+results/
+logs/
+
+# YOLO / CV specific
+*.pt
+*.onnx
+*.engine
+*.weights
+*.cfg
+*.names
+
+# TensorFlow / Keras
+*.h5
+*.keras
+saved_model/
+
+# Torch / Lightning
+lightning_logs/
+
+# Large media files
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.tiff

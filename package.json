@@ -1,0 +1,33 @@
+{
+  "name": "ai-referee",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "axios": "^1.8.4",
+    "chart.js": "^4.4.8",
+    "mongoose": "^8.10.1",
+    "mysql2": "^3.14.0",
+    "next": "^15.2.4",
+    "react": "^19.0.0",
+    "react-chartjs-2": "^5.3.0",
+    "react-color": "^2.19.3",
+    "react-dom": "^19.0.0",
+    "react-dropzone": "^14.3.6",
+    "react-icons": "^5.5.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "22.13.14",
+    "@types/react": "19.0.12",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.7",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
+  }
+}
