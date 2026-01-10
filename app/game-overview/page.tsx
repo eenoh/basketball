@@ -72,7 +72,7 @@ export default function GameOverviewPage() {
           if (teamName) {
             try {
               const res = await fetch(
-                `http://localhost:8081/roster-exists/${game.id}/${teamName}`
+                `http://localhost:8081/roster-exists/${game.id}/${encodeURIComponent(teamName)}`
               );
               const data = await res.json();
               rosterMap[game.id] = data.exists;
@@ -95,18 +95,15 @@ export default function GameOverviewPage() {
     return gameDateTime > new Date();
   };
 
-  const handleWatch = (game: any) => {
-    if (isFutureGame(game)) router.push(`/upcoming-game/${game.id}`);
-    else router.push(`/video/${game.id}`);
-  };
+  // ✅ Punkte-Tracking Seite
+  const handleTrackPoints = (game: any) => router.push(`/track/${game.id}`);
 
   const handleBoxScore = (game: any) => router.push(`/box-score/${game.id}`);
   const handleAnalytics = (game: any) => router.push(`/game-analytics/${game.id}`);
   const handleNewGame = () => router.push("/new-game");
   const handleDefineRoster = (gameId: number) => router.push(`/define-roster/${gameId}`);
 
-  // ⬇️ Neu: Handler zum Öffnen der Vorschlags-Seite
-  const handleProposals = (gameId: number) => router.push(`/proposal/${gameId}`);
+  const canTrackPoints = username === "eenoh";
 
   return (
     <div className="game-overview-container">
@@ -144,9 +141,11 @@ export default function GameOverviewPage() {
             {games.length > 0 ? (
               games.map((game: any) => {
                 const future = isFutureGame(game);
+
                 return (
                   <tr key={game.id}>
                     <td>{new Date(game.date).toLocaleDateString("de-DE")}</td>
+
                     <td>
                       <div style={{ display: "flex", justifyContent: "center" }}>
                         <span style={{ flex: 1 }}>{game.home_team}</span>
@@ -154,6 +153,7 @@ export default function GameOverviewPage() {
                         <span style={{ flex: 1 }}>{game.away_team}</span>
                       </div>
                     </td>
+
                     <td>
                       {game.score ? (
                         <div style={{ display: "flex", justifyContent: "center" }}>
@@ -165,22 +165,19 @@ export default function GameOverviewPage() {
                         "-"
                       )}
                     </td>
+
                     <td>{game.gym_name || "-"}</td>
                     <td>{game.tip_off?.slice(0, 5) || "-"}</td>
+
                     <td>
                       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                        <button onClick={() => handleWatch(game)} className="watch-btn">
-                          Ansehen
-                        </button>
-
-                        {/* ⬇️ Nur voor Admin/eenoh sichtbar */}
-                        {username === "eenoh" && (
+                        {canTrackPoints && (
                           <button
-                            onClick={() => handleProposals(game.id)}
-                            className="proposal-btn"
-                            title={`Vorschläge für Spiel #${game.id}`}
+                            onClick={() => handleTrackPoints(game)}
+                            className="watch-btn"
+                            title="Nur für eenoh"
                           >
-                            Vorschläge
+                            Punkte tracken
                           </button>
                         )}
 
@@ -192,10 +189,14 @@ export default function GameOverviewPage() {
                             <button onClick={() => handleAnalytics(game)} className="analytics-btn">
                               Spielstatistiken
                             </button>
+
                             {userTeam &&
                               (game.home_team === userTeam.name || game.away_team === userTeam.name) &&
                               !existingRosters[game.id] && (
-                                <button onClick={() => handleDefineRoster(game.id)} className="roster-btn">
+                                <button
+                                  onClick={() => handleDefineRoster(game.id)}
+                                  className="roster-btn"
+                                >
                                   Roster definieren
                                 </button>
                               )}

@@ -1,5 +1,4 @@
 const express = require("express");
-
 const app = express();
 
 require("dotenv").config();
@@ -10,14 +9,58 @@ const bcrypt = require("bcrypt");
 const multer = require("multer");
 const path = require("path");
 
-
 const corsOptions = {
   origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
   credentials: true,
-  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   optionsSuccessStatus: 204,
 };
+
+// Multer Error Handler
+function multerErrorHandler(err, req, res, next) {
+  // Multer-spezifische Fehler
+  if (err && err.name === "MulterError") {
+    return res.status(400).json({
+      error: "Upload fehlgeschlagen.",
+      details: err.message,
+      code: err.code,
+    });
+  }
+
+  // z.B. fileFilter/andere Upload-Errors
+  if (err) {
+    return res.status(400).json({
+      error: "Upload fehlgeschlagen.",
+      details: err.message || String(err),
+    });
+  }
+
+  return next();
+}
+
+// Helpers (bei dir schon vorhanden – falls doppelt, nur einmal behalten)
+function toInt(v) {
+  const n = parseInt(String(v), 10);
+  return Number.isFinite(n) ? n : 0;
+}
+function clamp0(v) {
+  const n = Number(v);
+  return Number.isFinite(n) ? Math.max(0, Math.trunc(n)) : 0;
+}
+function safePct(made, att) {
+  const a = clamp0(att);
+  const m = clamp0(made);
+  if (!a) return 0;
+  return Math.round((m / a) * 1000) / 10; // 1 Nachkommastelle
+}
+function calcPoints(r) {
+  const fg = clamp0(r.fg);
+  const three_p = clamp0(r.three_p);
+  const ft = clamp0(r.ft);
+  const twoMade = Math.max(0, fg - three_p);
+  return twoMade * 2 + three_p * 3 + ft;
+}
 
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
@@ -28,13 +71,12 @@ const db = mysql.createConnection({
   host: process.env.DB_HOST || "localhost",
   user: process.env.DB_USER || "root",
   password: process.env.DB_PASSWORD || "password",
-  database: process.env.DB_NAME || "referee"
+  database: process.env.DB_NAME || "referee",
 });
-
 
 const logoStorage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/logos"),
-  filename: (req, file, cb) => cb(null, Date.now() + "_" + file.originalname)
+  filename: (req, file, cb) => cb(null, Date.now() + "_" + file.originalname),
 });
 const logoUpload = multer({ storage: logoStorage });
 
@@ -45,11 +87,10 @@ const videoStorage = multer.diskStorage({
   filename: (req, file, cb) => {
     const uniqueName = Date.now() + "_" + file.originalname;
     cb(null, uniqueName);
-  }
+  },
 });
 
 const videoUpload = multer({ storage: videoStorage });
-
 
 db.connect((err) => {
   if (err) {
@@ -109,10 +150,11 @@ app.post("/signup", async (req, res) => {
 
       const saltRounds = 10;
       const hashedPasswort = await bcrypt.hash(passwort, saltRounds);
-      const insertQuery = "INSERT INTO persons (`vorname`, `nachname`, `geburtsdatum`, `email`, `username`, `passwort`) VALUES (?, ?, ?, ?, ?, ?)";
+      const insertQuery =
+        "INSERT INTO persons (`vorname`, `nachname`, `geburtsdatum`, `email`, `username`, `passwort`) VALUES (?, ?, ?, ?, ?, ?)";
       const values = [vorname, nachname, geburtsdatum, email, username, hashedPasswort];
 
-      db.query(insertQuery, values, (error, results) => {
+      db.query(insertQuery, values, (error) => {
         if (error) {
           console.error("DB Fehler beim Einfügen: ", error);
           return res.status(500).json({ error: "Fehler beim Speichern" });
@@ -121,7 +163,6 @@ app.post("/signup", async (req, res) => {
         return res.status(200).json({ message: "Registrierung erfolgreich!" });
       });
     });
-
   } catch (error) {
     console.error("Serverfehler: ", error);
     res.status(500).json({ error: "Serverfehler" });
@@ -129,45 +170,44 @@ app.post("/signup", async (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-    const {username, passwort} = req.body;
+  const { username, passwort } = req.body;
 
-    db.query("SELECT * FROM persons WHERE username = ?", [username], (error, results) => {
-        if (error || results.length === 0) {
-            return res.status(401).json({ success: false, message: "Ungültiger Benutzername"});
-        }
+  db.query("SELECT * FROM persons WHERE username = ?", [username], (error, results) => {
+    if (error || results.length === 0) {
+      return res.status(401).json({ success: false, message: "Ungültiger Benutzername" });
+    }
 
-        const user = results[0];
-        bcrypt.compare(passwort, user.passwort, (error, result) => {
-            if (result) {
-                res.json({ success: true});
-            } else {
-                res.status(401).json({ success: false, message: "Falsches Passwort"});
-            }
-
-        });
+    const user = results[0];
+    bcrypt.compare(passwort, user.passwort, (error2, result) => {
+      if (result) {
+        res.json({ success: true });
+      } else {
+        res.status(401).json({ success: false, message: "Falsches Passwort" });
+      }
     });
+  });
 });
 
 app.get("/usernames", (req, res) => {
-    const searchTerm = req.query.q || "";
-    const query = "SELECT username FROM persons WHERE username LIKE ? LIMIT 10";
+  const searchTerm = req.query.q || "";
+  const query = "SELECT username FROM persons WHERE username LIKE ? LIMIT 10";
 
-    db.query(query, [`%${searchTerm}%`], (error, results) => {
-        if (error) {
-            console.error("Fehler beim Abrufen der Usernames: ", error);
-            return res.status(500).json({ error: "Fehler beim Laden" });
-        }
-        res.json(results.map((r) => r.username));
-    });
+  db.query(query, [`%${searchTerm}%`], (error, results) => {
+    if (error) {
+      console.error("Fehler beim Abrufen der Usernames: ", error);
+      return res.status(500).json({ error: "Fehler beim Laden" });
+    }
+    res.json(results.map((r) => r.username));
+  });
 });
 
-app.post('/players', (req, res) => {
+app.post("/players", (req, res) => {
   const { username, jersey_number, position, height, weight, experience_years, team_id } = req.body;
 
-  // Alle Felder validieren, aber jersey_number explizit auf null oder undefined prüfen, nicht auf 0
   if (
     !username ||
-    jersey_number === undefined || jersey_number === null ||
+    jersey_number === undefined ||
+    jersey_number === null ||
     !position ||
     !height ||
     !weight ||
@@ -177,7 +217,6 @@ app.post('/players', (req, res) => {
     return res.status(400).json({ error: "Alle Felder müssen ausgefüllt sein." });
   }
 
-  // Prüfe, ob Spieler schon in einem Team ist
   const checkQuery = "SELECT id FROM players WHERE username = ?";
   db.query(checkQuery, [username], (checkErr, checkResults) => {
     if (checkErr) {
@@ -189,7 +228,6 @@ app.post('/players', (req, res) => {
       return res.status(400).json({ error: "Dieser Benutzer ist bereits einem Team zugeordnet!" });
     }
 
-    // Wenn Spieler nicht existiert → einfügen
     const insertQuery = `
       INSERT INTO players
       (username, jersey_number, position, height, weight, experience_years, team_id)
@@ -197,7 +235,7 @@ app.post('/players', (req, res) => {
     `;
     const values = [username, jersey_number, position, height, weight, experience_years, team_id];
 
-    db.query(insertQuery, values, (insertErr, results) => {
+    db.query(insertQuery, values, (insertErr) => {
       if (insertErr) {
         console.error("Fehler beim Einfügen des Spielers:", insertErr);
         return res.status(500).json({ error: "Fehler beim Speichern in der Datenbank." });
@@ -207,8 +245,6 @@ app.post('/players', (req, res) => {
     });
   });
 });
-
-
 
 app.get("/check-jersey", (req, res) => {
   const { team_id, jersey_number } = req.query;
@@ -249,21 +285,21 @@ app.get("/team-info/:id", (req, res) => {
       SELECT username, vorname, nachname FROM persons
       WHERE username IN (?, ?)
     `;
-    db.query(coachQuery, [team.head_coach, team.assistant_coach], (err, coachResults) => {
-      if (err) return res.status(500).json({ error: "Fehler bei Coach-Abfrage" });
+    db.query(coachQuery, [team.head_coach, team.assistant_coach], (err2, coachResults) => {
+      if (err2) return res.status(500).json({ error: "Fehler bei Coach-Abfrage" });
 
       const coaches = {};
       coachResults.forEach((c) => {
         coaches[c.username] = `${c.vorname} ${c.nachname}`;
       });
 
-        res.json({
-          team_name: team.name,
-          logo_path: team.logo_path,
-          logo_url: team.logo_path ? `http://localhost:8081${team.logo_path}` : null,
-          head_coach_fullname: coaches[team.head_coach] || team.head_coach,
-          assistant_coach_fullname: coaches[team.assistant_coach] || team.assistant_coach
-        });
+      res.json({
+        team_name: team.name,
+        logo_path: team.logo_path,
+        logo_url: team.logo_path ? `http://localhost:8081${team.logo_path}` : null,
+        head_coach_fullname: coaches[team.head_coach] || team.head_coach,
+        assistant_coach_fullname: coaches[team.assistant_coach] || team.assistant_coach,
+      });
     });
   });
 });
@@ -277,7 +313,7 @@ app.get("/players", (req, res) => {
     SELECT id, username, jersey_number, position, height, weight, experience_years, team_id
     FROM players
   `;
-  let params = [];
+  const params = [];
 
   if (team_id) {
     query += " WHERE team_id = ?";
@@ -294,8 +330,6 @@ app.get("/players", (req, res) => {
   });
 });
 
-
-
 app.get("/player-names", (req, res) => {
   const { usernames } = req.query;
 
@@ -303,7 +337,6 @@ app.get("/player-names", (req, res) => {
     return res.status(400).json({ error: "Benutzername(n) erforderlich" });
   }
 
-  // Komma-getrennte Usernames aus dem Frontend
   const usernameArray = usernames.split(",");
 
   const query = `
@@ -318,7 +351,6 @@ app.get("/player-names", (req, res) => {
       return res.status(500).json({ error: "Fehler bei der Datenbankabfrage" });
     }
 
-    // Map für schnelle Zuordnung im Frontend
     const nameMap = {};
     results.forEach((person) => {
       nameMap[person.username] = `${person.vorname} ${person.nachname}`;
@@ -352,12 +384,9 @@ app.get("/player/:id", (req, res) => {
   });
 });
 
-
-
-
 app.put("/player/:id", (req, res) => {
   const playerId = req.params.id;
-  const { username, jersey_number, position, height, weight, experience_years } = req.body;
+  const { jersey_number, position, height, weight, experience_years } = req.body;
 
   const query = `
     UPDATE players
@@ -367,7 +396,7 @@ app.put("/player/:id", (req, res) => {
 
   const values = [jersey_number, position, height, weight, experience_years, playerId];
 
-  db.query(query, values, (err, results) => {
+  db.query(query, values, (err) => {
     if (err) {
       console.error("Fehler beim Update:", err);
       return res.status(500).json({ error: "Fehler beim Speichern" });
@@ -377,13 +406,11 @@ app.put("/player/:id", (req, res) => {
   });
 });
 
-
 app.delete("/player/:id", (req, res) => {
   const playerId = req.params.id;
-
   const query = `DELETE FROM players WHERE id = ?`;
 
-  db.query(query, [playerId], (err, results) => {
+  db.query(query, [playerId], (err) => {
     if (err) {
       console.error("Fehler beim Löschen des Spielers:", err);
       return res.status(500).json({ error: "Fehler beim Löschen" });
@@ -405,7 +432,7 @@ app.post("/gyms", (req, res) => {
     VALUES (?, ?, ?, ?, ?)
   `;
 
-  db.query(insertQuery, [name, address, postal_code, capacity, home_team_id], (err, results) => {
+  db.query(insertQuery, [name, address, postal_code, capacity, home_team_id], (err) => {
     if (err) {
       console.error("Fehler beim Einfügen der Halle:", err);
       return res.status(500).json({ error: "Fehler beim Speichern der Halle" });
@@ -414,7 +441,6 @@ app.post("/gyms", (req, res) => {
     return res.status(201).json({ message: "Halle erfolgreich erstellt!" });
   });
 });
-
 
 app.get("/gym/:teamId", (req, res) => {
   const teamId = req.params.teamId;
@@ -435,36 +461,82 @@ app.get("/gym/:teamId", (req, res) => {
   });
 });
 
-app.post("/games", videoUpload.single("video"), (req, res) => {
-  const { date, tip_off, home_team, away_team } = req.body;
-  const videoPath = req.file ? `/uploads/videos/${req.file.filename}` : null;
+app.post("/games", (req, res, next) => {
+  videoUpload.single("video")(req, res, (err) => {
+    if (err) return next(err);
 
-  if (!date || !tip_off || !home_team || !away_team) {
-    return res.status(400).json({ error: "Alle Felder (außer Video) sind Pflichtfelder." });
-  }
+    const date = String(req.body.date || "").trim();
+    const tip_off_raw = String(req.body.tip_off || "").trim();
+    const home_team = String(req.body.home_team || "").trim();
+    const away_team = String(req.body.away_team || "").trim();
 
-  const gymQuery = `
-    SELECT g.id FROM gyms g
-    JOIN teams t ON g.home_team_id = t.id
-    WHERE t.name = ? LIMIT 1
-  `;
+    // ✅ Pflichtfelder
+    if (!date || !tip_off_raw || !home_team || !away_team) {
+      return res.status(400).json({ error: "Alle Felder (außer Video) sind Pflichtfelder." });
+    }
 
-  db.query(gymQuery, [home_team], (err, gymResults) => {
-    if (err) return res.status(500).json({ error: "Fehler bei der Gymsuche." });
-    const gym_id = gymResults.length > 0 ? gymResults[0].id : null;
+    // ✅ TIME-Format absichern (Frontend sendet HH:MM:SS, aber wir sind tolerant)
+    let tip_off = tip_off_raw;
+    if (/^\d{1,2}:\d{2}$/.test(tip_off)) tip_off = `${tip_off}:00`; // HH:MM -> HH:MM:SS
+    if (!/^\d{1,2}:\d{2}:\d{2}$/.test(tip_off)) {
+      return res.status(400).json({ error: "tip_off muss im Format HH:MM oder HH:MM:SS sein." });
+    }
 
-    const insertQuery = `
-      INSERT INTO games (date, tip_off, home_team, away_team, gym_id, video_path)
-      VALUES (?, ?, ?, ?, ?, ?)
+    // ✅ Video optional -> NULL oder Pfad
+    const videoPath = req.file ? `/uploads/videos/${req.file.filename}` : null;
+
+    // ✅ Gym stabil über Team-Namen finden (wie bei dir), aber wenn keines existiert -> 400 statt NULL insert
+    const gymQuery = `
+      SELECT g.id
+      FROM gyms g
+      JOIN teams t ON g.home_team_id = t.id
+      WHERE t.name = ?
+      LIMIT 1
     `;
-    const values = [date, tip_off, home_team, away_team, gym_id, videoPath];
 
-    db.query(insertQuery, values, (error, result) => {
-      if (error) return res.status(500).json({ error: "Fehler beim Speichern des Spiels." });
-      res.status(201).json({ message: "Spiel erfolgreich erstellt!", gameId: result.insertId });
+    db.query(gymQuery, [home_team], (err2, gymResults) => {
+      if (err2) {
+        console.error("❌ gymQuery error:", err2);
+        return res.status(500).json({
+          error: "Fehler bei der Gymsuche.",
+          details: err2.sqlMessage || err2.message,
+        });
+      }
+
+      if (!gymResults || gymResults.length === 0) {
+        return res.status(400).json({
+          error: `Für das Home Team "${home_team}" ist keine Halle (Gym) hinterlegt.`,
+        });
+      }
+
+      const gym_id = gymResults[0].id;
+
+      const insertQuery = `
+        INSERT INTO games (date, tip_off, home_team, away_team, gym_id, video_path)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `;
+
+      const values = [date, tip_off, home_team, away_team, gym_id, videoPath];
+
+      db.query(insertQuery, values, (error, result) => {
+        if (error) {
+          console.error("❌ insert games error:", error);
+          return res.status(500).json({
+            error: "Fehler beim Speichern des Spiels.",
+            details: error.sqlMessage || error.message,
+            code: error.code,
+          });
+        }
+
+        return res.status(201).json({
+          message: "Spiel erfolgreich erstellt!",
+          gameId: result.insertId,
+        });
+      });
     });
   });
 });
+
 
 app.get("/games", (req, res) => {
   const query = `
@@ -477,15 +549,13 @@ app.get("/games", (req, res) => {
 
   db.query(query, (err, results) => {
     if (err) {
-      console.error("❌ SQL Fehler:", err.sqlMessage); // ← Genaue Fehlermeldung
+      console.error("❌ SQL Fehler:", err.sqlMessage);
       return res.status(500).json({ error: "Fehler beim Abrufen der Spiele." });
     }
 
-    console.log("✅ Spiele gefunden:", results);
     res.json(results);
   });
 });
-
 
 app.get("/teamnames", (req, res) => {
   const searchTerm = req.query.q || "";
@@ -550,7 +620,7 @@ app.post("/game-roster", (req, res) => {
 
   const playersToInsert = [
     ...starting_five.map((player_id) => ({ player_id, is_starting: 1 })),
-    ...bench.map((player_id) => ({ player_id, is_starting: 0 }))
+    ...bench.map((player_id) => ({ player_id, is_starting: 0 })),
   ];
 
   const insertNext = (index = 0) => {
@@ -572,7 +642,6 @@ app.post("/game-roster", (req, res) => {
       }
 
       if (existing.length > 0) {
-        // Spieler ist bereits im Roster → überspringen
         insertNext(index + 1);
       } else {
         const insertQuery = `
@@ -593,8 +662,6 @@ app.post("/game-roster", (req, res) => {
   insertNext();
 });
 
-
-// GET: Roster für ein bestimmtes Spiel abrufen
 app.get("/game-roster/:gameId", (req, res) => {
   const gameId = req.params.gameId;
 
@@ -618,169 +685,11 @@ app.get("/game-roster/:gameId", (req, res) => {
   });
 });
 
-app.post('/player-stats', (req, res) => {
-  const stats = req.body; // Array von Stat-Objekten
-
-  if (!Array.isArray(stats)) {
-    return res.status(400).json({ error: "Array von Spieler-Statistiken erwartet." });
-  }
-
-  const values = stats.map(stat => [
-    stat.game_roster_id,
-    stat.mp,
-    stat.fg,
-    stat.fga,
-    stat.three_p,
-    stat.three_pa,
-    stat.ft,
-    stat.fta,
-    stat.orb,
-    stat.drb,
-    stat.trb,
-    stat.ast,
-    stat.blk,
-    stat.tov,
-    stat.pf,
-    stat.pst,
-    stat.plus_minus
-  ]);
-
-  const query = `
-    INSERT INTO player_stats (
-      game_roster_id, mp, fg, fga, three_p, three_pa,
-      ft, fta, orb, drb, trb, ast, blk, tov, pf, pst, plus_minus
-    ) VALUES ?
-  `;
-
-  db.query(query, [values], (err) => {
-    if (err) {
-      console.error("Fehler beim Speichern der Stats:", err);
-      return res.status(500).json({ error: "Fehler beim Speichern der Stats." });
-    }
-    res.status(201).json({ message: "Spieler-Statistiken gespeichert!" });
-  });
-});
-
-
-// Aggregierte Statistiken für ein Spiel abrufen
-app.get("/stats/:gameId", (req, res) => {
-  const gameId = req.params.gameId;
-
-  // --- Aggregation pro Spieler ---
-  const byPlayerSql = `
-    SELECT
-      p.id            AS player_id,
-      p.username      AS username,
-      p.jersey_number AS jersey_number,
-      t.id            AS team_id,
-      t.name          AS team_name,
-      SUM(ps.pst)     AS points,
-      SUM(ps.fg)      AS fg,
-      SUM(ps.fga)     AS fga,
-      SUM(ps.three_p) AS three_p,
-      SUM(ps.three_pa)AS three_pa,
-      SUM(ps.ft)      AS ft,
-      SUM(ps.fta)     AS fta,
-      SUM(ps.orb)     AS orb,
-      SUM(ps.drb)     AS drb,
-      SUM(ps.trb)     AS trb,
-      SUM(ps.ast)     AS ast,
-      SUM(ps.blk)     AS blk,
-      SUM(ps.tov)     AS tov,
-      SUM(ps.pf)      AS pf,
-      SUM(ps.plus_minus) AS plus_minus,
-      SUM(ps.mp)      AS mp
-    FROM game_rosters gr
-    JOIN players p      ON p.id = gr.player_id
-    JOIN teams t        ON t.id = p.team_id
-    JOIN player_stats ps ON ps.game_roster_id = gr.id
-    WHERE gr.game_id = ?
-    GROUP BY p.id, p.username, p.jersey_number, t.id, t.name
-    ORDER BY t.name ASC, points DESC, p.username ASC
-  `;
-
-  // --- Aggregation pro Team ---
-  const byTeamSql = `
-    SELECT
-      t.id            AS team_id,
-      t.name          AS team_name,
-      SUM(ps.pst)     AS points,
-      SUM(ps.fg)      AS fg,
-      SUM(ps.fga)     AS fga,
-      SUM(ps.three_p) AS three_p,
-      SUM(ps.three_pa)AS three_pa,
-      SUM(ps.ft)      AS ft,
-      SUM(ps.fta)     AS fta,
-      SUM(ps.orb)     AS orb,
-      SUM(ps.drb)     AS drb,
-      SUM(ps.trb)     AS trb,
-      SUM(ps.ast)     AS ast,
-      SUM(ps.blk)     AS blk,
-      SUM(ps.tov)     AS tov,
-      SUM(ps.pf)      AS pf,
-      SUM(ps.plus_minus) AS plus_minus
-    FROM game_rosters gr
-    JOIN players p       ON p.id = gr.player_id
-    JOIN teams t         ON t.id = p.team_id
-    JOIN player_stats ps ON ps.game_roster_id = gr.id
-    WHERE gr.game_id = ?
-    GROUP BY t.id, t.name
-    ORDER BY points DESC, team_name ASC
-  `;
-
-  db.query(byPlayerSql, [gameId], (errPlayer, rowsPlayer) => {
-    if (errPlayer) {
-      console.error("Fehler (byPlayerSql):", errPlayer);
-      return res.status(500).json({ error: "Fehler beim Abrufen der Spielerstatistiken." });
-    }
-
-    db.query(byTeamSql, [gameId], (errTeam, rowsTeam) => {
-      if (errTeam) {
-        console.error("Fehler (byTeamSql):", errTeam);
-        return res.status(500).json({ error: "Fehler beim Abrufen der Teamstatistiken." });
-      }
-
-      // Prozentwerte on-the-fly berechnen (ohne in DB zu speichern)
-      const safePct = (made, att) => (att > 0 ? +( (made / att) * 100 ).toFixed(1) : null);
-
-      const byPlayer = rowsPlayer.map(r => ({
-        player_id: r.player_id,
-        username: r.username,
-        jersey_number: r.jersey_number,
-        team_id: r.team_id,
-        team_name: r.team_name,
-        points: r.points,
-        fg: r.fg, fga: r.fga, fg_pct: safePct(r.fg, r.fga),
-        three_p: r.three_p, three_pa: r.three_pa, three_p_pct: safePct(r.three_p, r.three_pa),
-        ft: r.ft, fta: r.fta, ft_pct: safePct(r.ft, r.fta),
-        orb: r.orb, drb: r.drb, trb: r.trb,
-        ast: r.ast, blk: r.blk, tov: r.tov, pf: r.pf,
-        plus_minus: r.plus_minus,
-        mp: r.mp
-      }));
-
-      const byTeam = rowsTeam.map(r => ({
-        team_id: r.team_id,
-        team_name: r.team_name,
-        points: r.points,
-        fg: r.fg, fga: r.fga, fg_pct: safePct(r.fg, r.fga),
-        three_p: r.three_p, three_pa: r.three_pa, three_p_pct: safePct(r.three_p, r.three_pa),
-        ft: r.ft, fta: r.fta, ft_pct: safePct(r.ft, r.fta),
-        orb: r.orb, drb: r.drb, trb: r.trb,
-        ast: r.ast, blk: r.blk, tov: r.tov, pf: r.pf,
-        plus_minus: r.plus_minus
-      }));
-
-      return res.json({
-        game_id: Number(gameId),
-        byPlayer,
-        byTeam
-      });
-    });
-  });
-});
-
-
+/**
+ * ✅ UPDATED: Roster detailed liefert jetzt auch:
+ * - game_roster_id
+ * - bestehende player_stats (LEFT JOIN)
+ */
 app.get("/game-roster-detailed/:gameId", (req, res) => {
   const gameId = req.params.gameId;
 
@@ -793,8 +702,8 @@ app.get("/game-roster-detailed/:gameId", (req, res) => {
     const { home_team, away_team } = gameResults[0];
 
     const teamQuery = "SELECT id, name, logo_path FROM teams WHERE name IN (?, ?)";
-    db.query(teamQuery, [home_team, away_team], (err, teamResults) => {
-      if (err || teamResults.length < 2) {
+    db.query(teamQuery, [home_team, away_team], (err2, teamResults) => {
+      if (err2 || teamResults.length < 2) {
         return res.status(500).json({ error: "Teams konnten nicht geladen werden" });
       }
 
@@ -802,30 +711,49 @@ app.get("/game-roster-detailed/:gameId", (req, res) => {
       const awayTeam = teamResults.find((t) => t.name === away_team);
 
       const rosterQuery = `
-        SELECT gr.player_id, gr.is_starting, p.username, p.jersey_number, p.position, p.team_id
+        SELECT
+          gr.id AS game_roster_id,
+          gr.player_id,
+          gr.is_starting,
+          p.username,
+          p.jersey_number,
+          p.position,
+          p.team_id,
+
+          ps.mp,
+          ps.fg,
+          ps.fga,
+          ps.three_p,
+          ps.three_pa,
+          ps.ft,
+          ps.fta,
+          ps.orb,
+          ps.drb,
+          ps.trb,
+          ps.ast,
+          ps.blk,
+          ps.stl,
+          ps.tov,
+          ps.pf,
+          ps.pst,
+          ps.plus_minus
         FROM game_rosters gr
         JOIN players p ON gr.player_id = p.id
+        LEFT JOIN player_stats ps ON ps.game_roster_id = gr.id
         WHERE gr.game_id = ?
       `;
 
-      db.query(rosterQuery, [gameId], (err, rosterResults) => {
-        if (err) {
+      db.query(rosterQuery, [gameId], (err3, rosterResults) => {
+        if (err3) {
+          console.error("Roster detailed SQL error:", err3);
           return res.status(500).json({ error: "Roster konnte nicht geladen werden" });
         }
 
-        const homeStarters = rosterResults.filter(
-          (p) => p.team_id === homeTeam.id && p.is_starting === 1
-        );
-        const homeBench = rosterResults.filter(
-          (p) => p.team_id === homeTeam.id && p.is_starting === 0
-        );
+        const homeStarters = rosterResults.filter((r) => r.team_id === homeTeam.id && r.is_starting === 1);
+        const homeBench = rosterResults.filter((r) => r.team_id === homeTeam.id && r.is_starting === 0);
 
-        const awayStarters = rosterResults.filter(
-          (p) => p.team_id === awayTeam.id && p.is_starting === 1
-        );
-        const awayBench = rosterResults.filter(
-          (p) => p.team_id === awayTeam.id && p.is_starting === 0
-        );
+        const awayStarters = rosterResults.filter((r) => r.team_id === awayTeam.id && r.is_starting === 1);
+        const awayBench = rosterResults.filter((r) => r.team_id === awayTeam.id && r.is_starting === 0);
 
         res.json({
           home: {
@@ -865,7 +793,6 @@ app.put("/gym/:teamId", (req, res) => {
   const { teamId } = req.params;
   const { name, address, postal_code, capacity } = req.body;
 
-
   if (!name || !address || !postal_code || !capacity) {
     return res.status(400).json({ error: "Alle Felder müssen ausgefüllt sein." });
   }
@@ -890,7 +817,6 @@ app.put("/gym/:teamId", (req, res) => {
   });
 });
 
-// GET /roster-exists/:gameId/:teamName
 app.get("/roster-exists/:gameId/:teamName", (req, res) => {
   const { gameId, teamName } = req.params;
 
@@ -912,8 +838,6 @@ app.get("/roster-exists/:gameId/:teamName", (req, res) => {
   });
 });
 
-// POST /games/:gameId/players/:playerId/stats-event
-// Body: { type: 'off_reb' | 'def_reb' | 'three_pa' | 'three_p' }
 app.post("/games/:gameId/players/:playerId/stats-event", (req, res) => {
   const { gameId, playerId } = req.params;
   const { type } = req.body;
@@ -923,40 +847,29 @@ app.post("/games/:gameId/players/:playerId/stats-event", (req, res) => {
     return res.status(400).json({ success: false, message: "Ungültiger Statistik-Typ" });
   }
 
-  // Mapping: welcher DB-Column wird erhöht?
   const columnMap = {
-    fg: "fg",                     // 2P Make
-    fga: "fga",                   // 2P Attempt
-
-    three_p: "three_p",           // 3P Make
-    three_pa: "three_pa",         // 3P Attempt
-
-    ft: "ft",                     // FT Make
-    fta: "fta",                   // FT Attempt
-
-    orb: "orb",                   // Offensiv-Rebound
-    drb: "drb",                   // Defensiv-Rebound
-    trb: "trb",                   // Total-Rebound
-
-    ast: "ast",                   // Assist
-
-    blk: "blk",                   // Block
-    stl: "stl",                   // → Nur wenn du die DB erweiterst!
-
-    tov: "tov",                   // Turnover
-    pf: "pf",                     // Foul
-
-    pst: "pst",                   // Punkte
-
-    plus_minus: "plus_minus",     // +/- Wert
+    fg: "fg",
+    fga: "fga",
+    three_p: "three_p",
+    three_pa: "three_pa",
+    ft: "ft",
+    fta: "fta",
+    orb: "orb",
+    drb: "drb",
+    trb: "trb",
+    ast: "ast",
+    blk: "blk",
+    stl: "stl",
+    tov: "tov",
+    pf: "pf",
+    pst: "pst",
+    plus_minus: "plus_minus",
   };
 
-
   const column = columnMap[type];
+  if (!column) return res.status(400).json({ success: false, message: "Mapping fehlt" });
 
-  // 1) Roster-Eintrag holen/erstellen
-  const findRosterSql =
-    "SELECT id FROM game_rosters WHERE game_id = ? AND player_id = ? LIMIT 1";
+  const findRosterSql = "SELECT id FROM game_rosters WHERE game_id = ? AND player_id = ? LIMIT 1";
 
   db.query(findRosterSql, [gameId, playerId], (err, rosterRows) => {
     if (err) {
@@ -965,8 +878,7 @@ app.post("/games/:gameId/players/:playerId/stats-event", (req, res) => {
     }
 
     const ensureStatsRow = (game_roster_id) => {
-      const findStatsSql =
-        "SELECT id FROM player_stats WHERE game_roster_id = ? LIMIT 1";
+      const findStatsSql = "SELECT id FROM player_stats WHERE game_roster_id = ? LIMIT 1";
 
       db.query(findStatsSql, [game_roster_id], (err2, statRows) => {
         if (err2) {
@@ -975,7 +887,6 @@ app.post("/games/:gameId/players/:playerId/stats-event", (req, res) => {
         }
 
         if (statRows.length === 0) {
-          // Noch keine Stats → neue Zeile mit 1 in der entsprechenden Spalte
           const insertSql = `
             INSERT INTO player_stats (game_roster_id, ${column})
             VALUES (?, 1)
@@ -988,7 +899,6 @@ app.post("/games/:gameId/players/:playerId/stats-event", (req, res) => {
             return res.json({ success: true });
           });
         } else {
-          // Stats existieren → Spalte um 1 erhöhen
           const updateSql = `
             UPDATE player_stats
             SET ${column} = ${column} + 1
@@ -1005,14 +915,9 @@ app.post("/games/:gameId/players/:playerId/stats-event", (req, res) => {
       });
     };
 
-    if (rosterRows.length > 0) {
-      const rosterId = rosterRows[0].id;
-      return ensureStatsRow(rosterId);
-    }
+    if (rosterRows.length > 0) return ensureStatsRow(rosterRows[0].id);
 
-    // Kein Roster → neu anlegen
-    const insertRosterSql =
-      "INSERT INTO game_rosters (game_id, player_id, is_starting) VALUES (?, ?, 0)";
+    const insertRosterSql = "INSERT INTO game_rosters (game_id, player_id, is_starting) VALUES (?, ?, 0)";
     db.query(insertRosterSql, [gameId, playerId], (err5, resultRoster) => {
       if (err5) {
         console.error("Fehler beim Erstellen game_rosters:", err5);
@@ -1024,8 +929,6 @@ app.post("/games/:gameId/players/:playerId/stats-event", (req, res) => {
   });
 });
 
-// Spieler zu einem Spiel laden (für Dropdown)
-// GET /games/:gameId/players
 app.get("/games/:gameId/players", (req, res) => {
   const { gameId } = req.params;
 
@@ -1050,10 +953,403 @@ app.get("/games/:gameId/players", (req, res) => {
   });
 });
 
+/**
+ * ✅ FIXED: bulk-upsert (kein SQL-Syntax-Fehler mehr, immer gleiche Anzahl Platzhalter/Values)
+ * PUT /player-stats/bulk-upsert
+ * Body: { updates: [{ game_id, player_id, mp, fg, fga, ... }] }
+ */
+app.put("/player-stats/bulk-upsert", (req, res) => {
+  const { updates } = req.body;
+
+  if (!Array.isArray(updates) || updates.length === 0) {
+    return res.status(400).json({ error: "updates muss ein nicht-leeres Array sein." });
+  }
+
+  const toInt = (v) => {
+    const n = Number(v);
+    return Number.isFinite(n) ? Math.trunc(n) : 0;
+  };
+  const clamp0 = (v) => Math.max(0, toInt(v));
+  const clampPM = (v) => toInt(v);
+
+  const normalizeMp = (mp) => {
+    const s = String(mp ?? "").trim();
+    if (!s) return "00:00:00";
+
+    if (/^\d{1,2}:\d{2}$/.test(s)) {
+      const [mm, ss] = s.split(":");
+      return `00:${String(mm).padStart(2, "0")}:${ss}`;
+    }
+
+    if (/^\d{1,2}:\d{2}:\d{2}$/.test(s)) {
+      const [hh, mm, ss] = s.split(":");
+      return `${String(hh).padStart(2, "0")}:${mm}:${ss}`;
+    }
+
+    if (/^\d{1,3}$/.test(s)) {
+      const mm = String(s).padStart(2, "0");
+      return `00:${mm}:00`;
+    }
+
+    return "00:00:00";
+  };
+
+  const safePct = (made, att) => (att > 0 ? Math.round((made / att) * 1000) / 10 : 0);
+
+  const processOne = (idx) => {
+    if (idx >= updates.length) {
+      return res.json({ success: true, saved: updates.length });
+    }
+
+    const u = updates[idx];
+
+    const gameId = toInt(u.game_id);
+    const playerId = toInt(u.player_id);
+
+    if (!gameId || !playerId) {
+      return res.status(400).json({ error: "game_id und player_id sind Pflicht." });
+    }
+
+    let fg = clamp0(u.fg);
+    let fga = clamp0(u.fga);
+    let three_p = clamp0(u.three_p);
+    let three_pa = clamp0(u.three_pa);
+    let ft = clamp0(u.ft);
+    let fta = clamp0(u.fta);
+
+    if (fg > fga) fga = fg;
+    if (three_p > three_pa) three_pa = three_p;
+    if (ft > fta) fta = ft;
+
+    const orb = clamp0(u.orb);
+    const drb = clamp0(u.drb);
+    const trb = clamp0(u.trb ?? (orb + drb));
+    const ast = clamp0(u.ast);
+    const blk = clamp0(u.blk);
+    const stl = clamp0(u.stl);
+    const tov = clamp0(u.tov);
+    const pf = clamp0(u.pf);
+    const pst = clamp0(u.pst);
+    const plus_minus = clampPM(u.plus_minus);
+    const mp = normalizeMp(u.mp);
+
+    const fg_percent = safePct(fg, fga);
+    const three_p_percent = safePct(three_p, three_pa);
+    const ft_percent = safePct(ft, fta);
+
+    const findRosterSql = `
+      SELECT id FROM game_rosters
+      WHERE game_id = ? AND player_id = ?
+      LIMIT 1
+    `;
+
+    db.query(findRosterSql, [gameId, playerId], (err, rosterRows) => {
+      if (err) {
+        console.error("bulk-upsert: Fehler beim Lesen game_rosters:", err);
+        return res.status(500).json({ error: "DB Fehler (game_rosters lesen)" });
+      }
+
+      const ensureStatsUpsert = (rosterId) => {
+        /**
+         * ✅ Robust: keine VALUES()-Funktion, keine Alias-Probleme
+         * 21 Columns + 21 VALUES + 20 Updates (ohne game_roster_id)
+         */
+        const upsertSql = `
+          INSERT INTO player_stats (
+            game_roster_id, mp,
+            fg, fga, fg_percent,
+            three_p, three_pa, three_p_percent,
+            ft, fta, ft_percent,
+            orb, drb, trb,
+            ast, blk, stl,
+            tov, pf, pst, plus_minus
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          ON DUPLICATE KEY UPDATE
+            mp = ?,
+            fg = ?,
+            fga = ?,
+            fg_percent = ?,
+            three_p = ?,
+            three_pa = ?,
+            three_p_percent = ?,
+            ft = ?,
+            fta = ?,
+            ft_percent = ?,
+            orb = ?,
+            drb = ?,
+            trb = ?,
+            ast = ?,
+            blk = ?,
+            stl = ?,
+            tov = ?,
+            pf = ?,
+            pst = ?,
+            plus_minus = ?
+        `;
+
+        // 21 insert values + 20 update values = 41
+        const insertValues = [
+          rosterId, mp,
+          fg, fga, fg_percent,
+          three_p, three_pa, three_p_percent,
+          ft, fta, ft_percent,
+          orb, drb, trb,
+          ast, blk, stl,
+          tov, pf, pst, plus_minus,
+        ];
+
+        const updateValues = [
+          mp,
+          fg,
+          fga,
+          fg_percent,
+          three_p,
+          three_pa,
+          three_p_percent,
+          ft,
+          fta,
+          ft_percent,
+          orb,
+          drb,
+          trb,
+          ast,
+          blk,
+          stl,
+          tov,
+          pf,
+          pst,
+          plus_minus,
+        ];
+
+        const values = [...insertValues, ...updateValues];
+
+        db.query(upsertSql, values, (err2) => {
+          if (err2) {
+            console.error("bulk-upsert: Fehler beim Upsert player_stats:", err2);
+            return res.status(500).json({
+              error: "DB Fehler (player_stats upsert)",
+              code: err2.code,
+              sqlMessage: err2.sqlMessage,
+            });
+          }
+          return processOne(idx + 1);
+        });
+      };
+
+      if (rosterRows.length > 0) return ensureStatsUpsert(rosterRows[0].id);
+
+      const insertRosterSql = `
+        INSERT INTO game_rosters (game_id, player_id, is_starting)
+        VALUES (?, ?, 0)
+      `;
+      db.query(insertRosterSql, [gameId, playerId], (err3, r) => {
+        if (err3) {
+          console.error("bulk-upsert: Fehler beim Erstellen game_rosters:", err3);
+          return res.status(500).json({ error: "DB Fehler (game_rosters insert)" });
+        }
+        return ensureStatsUpsert(r.insertId);
+      });
+    });
+  };
+
+  processOne(0);
+});
+
+// GET /game-analytics/:gameId
+app.get("/game-analytics/:gameId", (req, res) => {
+  const gameId = toInt(req.params.gameId);
+  if (!gameId) return res.status(400).json({ error: "Ungültige gameId" });
+
+  const gameSql = `
+    SELECT id, home_team, away_team
+    FROM games
+    WHERE id = ?
+    LIMIT 1
+  `;
+
+  db.query(gameSql, [gameId], (gErr, gRows) => {
+    if (gErr) {
+      console.error("game-analytics: Fehler beim Lesen games:", gErr);
+      return res.status(500).json({ error: "DB Fehler (game lesen)" });
+    }
+    if (!gRows || gRows.length === 0) {
+      return res.status(404).json({ error: "Spiel nicht gefunden" });
+    }
+
+    const homeName = gRows[0].home_team;
+    const awayName = gRows[0].away_team;
+
+    const sql = `
+      SELECT
+        t.id AS team_id,
+        t.name AS team_name,
+        t.color_hex AS team_color,
+        t.logo_path AS team_logo_path,
+
+        p.id AS player_id,
+        p.username,
+        p.jersey_number,
+
+        gr.id AS game_roster_id,
+
+        ps.mp,
+        COALESCE(ps.fg, 0) AS fg,
+        COALESCE(ps.fga, 0) AS fga,
+        COALESCE(ps.three_p, 0) AS three_p,
+        COALESCE(ps.three_pa, 0) AS three_pa,
+        COALESCE(ps.ft, 0) AS ft,
+        COALESCE(ps.fta, 0) AS fta,
+        COALESCE(ps.orb, 0) AS orb,
+        COALESCE(ps.drb, 0) AS drb,
+        COALESCE(ps.trb, 0) AS trb,
+        COALESCE(ps.ast, 0) AS ast,
+        COALESCE(ps.blk, 0) AS blk,
+        COALESCE(ps.stl, 0) AS stl,
+        COALESCE(ps.tov, 0) AS tov,
+        COALESCE(ps.pf, 0) AS pf,
+        COALESCE(ps.pst, 0) AS pst
+      FROM game_rosters gr
+      JOIN players p ON p.id = gr.player_id
+      JOIN teams t ON t.id = p.team_id
+      LEFT JOIN player_stats ps ON ps.game_roster_id = gr.id
+      WHERE gr.game_id = ?
+        AND t.name IN (?, ?)
+      ORDER BY t.name, p.jersey_number IS NULL, p.jersey_number, p.username
+    `;
+
+    db.query(sql, [gameId, homeName, awayName], (err, rows) => {
+      if (err) {
+        console.error("game-analytics: Fehler beim Lesen rosters/stats:", err);
+        return res.status(500).json({
+          error: "DB Fehler (rosters/stats lesen)",
+          code: err.code,
+          sqlMessage: err.sqlMessage,
+        });
+      }
+
+      const byPlayer = (rows || []).map((r) => {
+        const fg = clamp0(r.fg);
+        const fga = clamp0(r.fga);
+        const three_p = clamp0(r.three_p);
+        const three_pa = clamp0(r.three_pa);
+        const ft = clamp0(r.ft);
+        const fta = clamp0(r.fta);
+
+        return {
+          player_id: toInt(r.player_id),
+          username: r.username,
+          jersey_number: r.jersey_number ?? null,
+          team_id: toInt(r.team_id),
+          team_name: r.team_name,
+
+          points: calcPoints(r),
+
+          fg,
+          fga,
+          fg_pct: safePct(fg, fga),
+
+          three_p,
+          three_pa,
+          three_p_pct: safePct(three_p, three_pa),
+
+          ft,
+          fta,
+          ft_pct: safePct(ft, fta),
+
+          orb: clamp0(r.orb),
+          drb: clamp0(r.drb),
+          trb: clamp0(r.trb),
+          ast: clamp0(r.ast),
+          blk: clamp0(r.blk),
+          stl: clamp0(r.stl),
+          tov: clamp0(r.tov),
+          pf: clamp0(r.pf),
+        };
+      });
+
+      const teams = {};
+
+      function ensureTeam(team_id, team_name, team_color, team_logo_path) {
+        if (!teams[team_name]) {
+          teams[team_name] = {
+            team_id,
+            team_name,
+            team_color: team_color || "#3f4a54",
+            team_logo_url: team_logo_path ? `http://localhost:8081${team_logo_path}` : null,
+
+            points: 0,
+            fg: 0,
+            fga: 0,
+            fg_pct: 0,
+            three_p: 0,
+            three_pa: 0,
+            three_p_pct: 0,
+            ft: 0,
+            fta: 0,
+            ft_pct: 0,
+            orb: 0,
+            drb: 0,
+            trb: 0,
+            ast: 0,
+            blk: 0,
+            stl: 0,
+            tov: 0,
+            pf: 0,
+          };
+        }
+        return teams[team_name];
+      }
+
+      // Team-Metadaten aus rows nehmen (Farbe/Logo)
+      for (const r of rows || []) {
+        ensureTeam(
+          toInt(r.team_id),
+          r.team_name,
+          r.team_color,
+          r.team_logo_path
+        );
+      }
+
+      for (const p of byPlayer) {
+        const agg = teams[p.team_name];
+        agg.points += p.points;
+        agg.fg += p.fg;
+        agg.fga += p.fga;
+        agg.three_p += p.three_p;
+        agg.three_pa += p.three_pa;
+        agg.ft += p.ft;
+        agg.fta += p.fta;
+
+        agg.orb += p.orb;
+        agg.drb += p.drb;
+        agg.trb += p.trb;
+        agg.ast += p.ast;
+        agg.blk += p.blk;
+        agg.stl += p.stl;
+        agg.tov += p.tov;
+        agg.pf += p.pf;
+      }
+
+      for (const k of Object.keys(teams)) {
+        const t = teams[k];
+        t.fg_pct = safePct(t.fg, t.fga);
+        t.three_p_pct = safePct(t.three_p, t.three_pa);
+        t.ft_pct = safePct(t.ft, t.fta);
+      }
+
+      return res.json({
+        game_id: gameId,
+        home_team: homeName,
+        away_team: awayName,
+        teams,
+        byPlayer,
+      });
+    });
+  });
+});
 
 
+app.use(multerErrorHandler);
 
 const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => console.log(`Server läuft auf Port ${PORT}`));
-
-
